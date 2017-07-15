@@ -1,0 +1,32 @@
+#!/bin/sh
+
+function help() {
+    cat <<EOF
+Usage:
+    alwaysFunctionKey [command]
+
+Commands:
+    enable:  Enable AlwaysFunctionKey
+    disable: Disable AlwaysFunctionKey
+    help:    Show help
+EOF
+}
+
+if [ $# -ne 1 ]; then
+    help
+    exit 1
+fi
+
+if [ $1 == "enable" ]; then
+    defaults write com.apple.touchbar.agent PresentationModeGlobal -string functionKeys
+    killall TouchBarAgent
+
+elif [ $1 == "disable" ]; then
+    defaults delete com.apple.touchbar.agent PresentationModeGlobal
+    killall TouchBarAgent
+
+else
+    help
+    exit 1
+fi
+
